@@ -1,0 +1,27 @@
+<style>
+textarea {
+	overflow-y: scroll;
+	height: 100px;
+	resize: none; 
+	color:#000;
+}
+</style>
+<div class="p-4 bg-secondary rounded-lg flex flex-col mb-4">
+  <div class="flex flex-col">
+    <div class="pb-2">Sample plugin console</div>
+    
+	<textarea id="plugin_console"></textarea>
+  </div>
+</div>
+<script>
+  {
+    const pluginConsole = document.getElementById("plugin_console")
+	
+    const messagePort = createPluginMessagePort("plugin-sample-project")
+    messagePort.onmessage = (e) => {
+      const data = e.data
+      pluginConsole.value += data.message + '\r\n'
+    }
+    messagePort.start()
+  }
+</script>
