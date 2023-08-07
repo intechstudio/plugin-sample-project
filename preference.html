@@ -10,18 +10,28 @@ textarea {
   <div class="flex flex-col">
     <div class="pb-2">Sample plugin console</div>
     
-	<textarea id="plugin_console"></textarea>
+    <textarea id="plugin_console"></textarea>
+    <button
+      id="button_send_message" class="flex items-center justify-center rounded focus:outline-none border-2 border-select bg-select hover:bg-select-saturate-10 hover:border-select-saturate-10 text-white px-2 py-0.5 mr-2">
+      Send echo message
+    </button>
   </div>
 </div>
 <script>
   {
     const pluginConsole = document.getElementById("plugin_console")
+	const pluginButton = document.getElementById("button_send_message")
 	
     const messagePort = createPluginMessagePort("plugin-sample-project")
     messagePort.onmessage = (e) => {
       const data = e.data
       pluginConsole.value += data.message + '\r\n'
     }
+	
+	pluginButton.onclick = function(){
+		messagePort.postMessage({type: "request-echo"})
+	}
+	
     messagePort.start()
   }
 </script>
